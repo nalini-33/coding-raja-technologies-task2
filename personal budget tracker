@@ -1,0 +1,55 @@
+class BudgetTracker:
+    def __init__(self):
+        self.income = 0.0
+        self.expenses = []
+
+    def add_income(self, amount):
+        self.income += amount
+
+    def add_expense(self, description, amount):
+        self.expenses.append((description, amount))
+
+    def get_total_expenses(self):
+        return sum(amount for _, amount in self.expenses)
+
+    def get_balance(self):
+        return self.income - self.get_total_expenses()
+
+    def display_summary(self):
+        print("=== Monthly Budget Summary ===")
+        print(f"Income: ${self.income:.2f}")
+        print("Expenses:")
+        for description, amount in self.expenses:
+            print(f"- {description}: ${amount:.2f}")
+        print("-" * 20)
+        print(f"Total Expenses: ${self.get_total_expenses():.2f}")
+        print(f"Balance: ${self.get_balance():.2f}")
+
+
+# Function to get float input from user
+def get_float_input(prompt):
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+
+
+# Main function to interact with the budget tracker
+if __name__ == "__main__":
+    tracker = BudgetTracker()
+    
+    # Read income from user
+    income = get_float_input("Enter your monthly income: $")
+    tracker.add_income(income)
+    
+    # Read expenses from user until they enter 'done'
+    while True:
+        description = input("Enter expense description (or 'done' to finish): ")
+        if description.lower() == 'done':
+            break
+        amount = get_float_input("Enter expense amount: $")
+        tracker.add_expense(description, amount)
+    
+    # Display summary
+    tracker.display_summary()
